@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        margin: 0 ;
+        background-image:url("122003.jpg");
+        background-repeat: no-repeat;
+        background-size:cover;
+        overflow: hidden;
+        height: 100vh;
+        position: absolute;
+        background-attachment: fixed;
+      }
+
+
+      .circle {
+        width: 400px;
+        height: 400px;
+        background-repeat: no-repeat;
+        background-size:cover;
+        margin: 21px;
+        padding: 16px;
+        position: relative;
+        left:732px;
+        top:289px;
+        opacity: 0.8;
+
+   
+      }
+      .jhour1 {
+        /*時針*/
+        width: 8px;
+        height: 40%;
+        background: rgb(255,209,0);
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        margin-left: -5px;
+      }
+      .jmin1 {
+        /*分針*/
+        width: 4px;
+        height: 50%;
+        background:tan;
+        position: absolute;
+        left: 50%;
+        top: 7%;
+        margin-left: -5px;
+      }
+      .jsec1 {
+        /*秒針*/
+        width: 2px;
+        height: 50%;
+        background: black;
+        position: absolute;
+        left: 50%;
+        top: 6%;
+        margin-left: -2px;
+      }
+      .zsec1 {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        animation: j_s 60s infinite linear;
+      }
+      .zmin1 {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        animation: j_m 3600s infinite linear;
+      }
+      .zhour1 {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        animation: j_h 43200s infinite linear;
+      }
+
+      /**/
+
+
+    </style>
+    <script>
+      /*min=45; => y=270 */
+      var time = new Date();
+      var pos_s = time.getSeconds();
+      var pos_m = time.getMinutes();
+      var pos_h = time.getHours();
+      var x = pos_s * 6;
+      var y = pos_m * 6 + pos_s * 0.1; /*對Y來說還有一個角度是60秒滿足6度*/
+      var z = pos_h * 30 + pos_m * 0.5; /*對Z來說還有一個角度是60分鐘滿足30度*/
+      document.write(`
+      <style>
+      @keyframes j_s {
+        from {transform: rotate(${x}deg);}
+        to {transform: rotate(${360 + x}deg);}
+      }
+      @keyframes j_m {
+        from {transform: rotate(${y}deg);}
+        to {transform: rotate(${360 + y}deg);}
+      }
+      @keyframes j_h {
+        from {transform: rotate(${z}deg);}
+        to {transform: rotate(${360 + z}deg);}
+      }
+    </style>
+      `);
+    </script>
+  </head>
+  <body>
+    <div class="circle">
+      <div class="zmin1"><div class="jmin1"></div></div>
+      <div class="zhour1"><div class="jhour1"></div></div>
+      <div class="zsec1"><div class="jsec1"></div></div>
+    </div>
+    <script>
+    /*初始先ON一遍DOM*/
+    document.getElementsByClassName('osec4')[0].style.transform=`rotate(${x}deg)`;
+    document.getElementsByClassName('omin4')[0].style.transform=`rotate(${y}deg)`;
+    document.getElementsByClassName('ohour4')[0].style.transform=`rotate(${z}deg)`;
+
+    /*跑reply*/
+    function overtime(){
+      time = new Date();
+      pos_s = time.getSeconds();
+      pos_m = time.getMinutes();
+      pos_h = time.getHours();
+      x = pos_s * 6;
+      y = pos_m * 6 + pos_s * 0.1; /*對Y來說還有一個角度是60秒滿足6度*/
+      z = pos_h * 30 + pos_m * 0.5; /*對Z來說還有一個角度是60分鐘滿足30度*/
+      document.getElementsByClassName('osec4')[0].style.transform=`rotate(${x}deg)`;
+      document.getElementsByClassName('omin4')[0].style.transform=`rotate(${y}deg)`;
+      document.getElementsByClassName('ohour4')[0].style.transform=`rotate(${z}deg)`;
+    }
+
+    var loop=setInterval(overtime,1000);
+
+
+    function ctl(who) {
+      if(who.textContent=="STOP"){
+        clearInterval(loop);
+        who.textContent="PLAY";
+      }
+      else{
+        loop=setInterval(overtime,1000);
+        who.textContent="STOP";
+      }
+    }
+    </script>
+  </body>
+</html>
